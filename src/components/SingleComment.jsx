@@ -1,6 +1,6 @@
 import Votes from "./Votes";
 // import avatar from "../images/avatars/image-amyrobson.png";
-import Icons from "../icons/Icons";
+import { Icons } from "../icons/Icons";
 import CommentBox from "./Layouts";
 import { TextArea } from "./InputField";
 import { Button } from "./Button";
@@ -20,6 +20,7 @@ export default function SingleComment({
   edit,
   value,
   handleChange,
+  disabled,
 }) {
   return (
     <CommentBox>
@@ -102,7 +103,7 @@ export default function SingleComment({
                   handleChange={handleChange}
                 />
                 <div className="flex items-end justify-end">
-                  <Button text="update" />
+                  <Button text="update" disabled={disabled} />
                 </div>
               </>
             ) : (

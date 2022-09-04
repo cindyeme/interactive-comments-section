@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import ApiService from "./api/ApiService";
+import { ApiService } from "./api/ApiService";
 import AddComment from "./components/AddComment";
 import SingleComment from "./components/SingleComment";
 
 function App() {
-  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState('')
+  const [oldComments, setOldComments] = useState([]);
   const [loading, setLoading] = useState(true);
-  let [score, setScore] = useState(0);
+  // let [score, setScore] = useState(0);
 
   // handle votes
   const handleVotes = (type, score) => {
@@ -29,13 +30,13 @@ function App() {
   useEffect(() => {
     ApiService.getAllComments()
       .then((res) => {
-        setComments(res);
+        setOldComments(res);
         setLoading(false);
       })
       .catch((error) => console.log(error));
   }, []);
 
-  console.log(score);
+  // console.log(score);
   // JSON.parse(localStorage.getItem("vote"))
   return (
     <>
@@ -48,7 +49,7 @@ function App() {
                   Loading...
                 </h1>
               ) : (
-                comments.map((comment, idx) => {
+                oldComments.map((comment, idx) => {
                   // score = comment?.score;
                   return (
                     <SingleComment

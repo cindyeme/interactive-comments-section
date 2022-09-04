@@ -11,7 +11,8 @@ const CurrentUserComment = ({
   content,
   handleEdit,
   handleDelete,
-  edit
+  edit,
+  disabled
 }) => {
   return (
     <SingleComment
@@ -27,6 +28,7 @@ const CurrentUserComment = ({
       handleEdit={handleEdit}
       handleDelete={handleDelete}
       edit={edit}
+      disabled={disabled}
     />
   );
 };

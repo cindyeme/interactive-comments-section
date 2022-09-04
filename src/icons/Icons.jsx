@@ -55,4 +55,4 @@ const ReplyIcon = () => (
 );
  
 
-export default {DeleteIcon, EditIcon, MinusIcon, PlusIcon, ReplyIcon}
+export const Icons = {DeleteIcon, EditIcon, MinusIcon, PlusIcon, ReplyIcon}
