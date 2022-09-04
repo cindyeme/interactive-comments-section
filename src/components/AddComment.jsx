@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import ApiService from "../api/ApiService";
 import CommentBox from "./Layouts";
 import avatar from "../images/avatars/image-juliusomo.png";
+import { TextArea } from "./InputField";
+import { Button } from "./Button";
 
-const AddComment = () => {
+const AddComment = ({value, handleChange}) => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -17,18 +19,15 @@ const AddComment = () => {
       </div>
       <div className="flex">
         <div className="grow w-full mr-4">
-          <textarea
+          <TextArea
             name="comment"
-            id="comment"
             // rows="10"
-            className="border px-5 py-4 rounded-md w-full focus:border-primary-400 focus:outline-none"
-            placeholder="Add a comment..."
+            value={value}
+            handleChange={handleChange}
           />
         </div>
         <div className="flex-none">
-          <button className="bg-primary-400 text-white px-4 py-2 uppercase rounded-md">
-            send
-          </button>
+          <Button text="Send" />
         </div>
       </div>
     </CommentBox>

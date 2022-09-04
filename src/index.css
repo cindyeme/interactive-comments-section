@@ -15,6 +15,15 @@ h1 {
 button:focus{
   outline: 0;
 }
+button.primary:hover .icon{
+  fill: hsl(239, 57%, 85%);
+}
+button.vote:hover .icon{
+  fill: hsl(238, 40%, 52%);
+}
+button.delete:hover .icon{
+  fill: hsl(357, 100%, 86%);
+}
 .App-header {
   min-height: 100vh;
   display: flex;
