@@ -21,7 +21,7 @@ const AddComment = () => {
             name="comment"
             id="comment"
             // rows="10"
-            className="border px-5 py-4 rounded-md w-full focus:border-primary-400"
+            className="border px-5 py-4 rounded-md w-full focus:border-primary-400 focus:outline-none"
             placeholder="Add a comment..."
           />
         </div>

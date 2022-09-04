@@ -12,6 +12,7 @@ export default function SingleComment({
   createdAt,
   handleReply,
   content,
+  currentUser,
 }) {
   return (
     <CommentBox>
@@ -26,8 +27,17 @@ export default function SingleComment({
           {/* user details */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <img src={_avatar} alt="avatar" className="w-8 h-8 object-cover" />
-              <p className="font-semibold text-neutral-500">{username}</p>
+              <img
+                src={_avatar}
+                alt="avatar"
+                className="w-8 h-8 object-cover"
+              />
+              <p className="font-semibold text-neutral-500 flex items-center space-x-2">
+                <span>{username} </span>{" "}
+                <span className="bg-primary-400 text-white rounded px-1.5 py-px text-xs">
+                  You
+                </span>
+              </p>
               <p className="text-neutral-400">{createdAt}</p>
             </div>
             <div>

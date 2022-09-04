@@ -6,16 +6,23 @@ import SingleComment from "./components/SingleComment";
 function App() {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [score, setScore] = useState(0);
+  let [score, setScore] = useState(0);
 
-  // handle down votes
-  const handleDownVotes = (score) => {
-    setScore(score - 1)
-    // localStorage.setItem("downvote", JSON.stringify(score));
+  // handle votes
+  const handleVotes = (type, score) => {
+    // if (id) {
+    if (type === "upvote") {
+      // setScore((prev) => prev + 1);
+      score += 1;
+    } else if (type === "downvote") {
+      if (score > 0) {
+        // setScore((prev) => prev - 1);
+        score -= 1;
+      }
+    }
+    localStorage.setItem("vote", JSON.stringify(score));
+    // }
   };
-
-  // handle upvotes
-  const handleUpVotes = (score) => {};
 
   const handleReply = () => {};
 
@@ -28,8 +35,8 @@ function App() {
       .catch((error) => console.log(error));
   }, []);
 
-  console.log(comments);
-
+  console.log(score);
+  // JSON.parse(localStorage.getItem("vote"))
   return (
     <>
       <main>
@@ -41,19 +48,26 @@ function App() {
                   Loading...
                 </h1>
               ) : (
-                comments.map((comment, idx) => (
-                  <SingleComment
-                    key={idx}
-                    _avatar={comment?.user?.image?.webp}
-                    score={comment?.score}
-                    username={comment?.user.username}
-                    createdAt={comment?.createdAt}
-                    content={comment?.content}
-                    handleDownVotes={() => handleDownVotes(comment?.score)}
-                    handleUpVotes={handleUpVotes}
-                    handleReply={handleReply}
-                  />
-                ))
+                comments.map((comment, idx) => {
+                  // score = comment?.score;
+                  return (
+                    <SingleComment
+                      key={idx}
+                      _avatar={comment?.user?.image?.webp}
+                      score={comment?.score}
+                      username={comment?.user.username}
+                      createdAt={comment?.createdAt}
+                      content={comment?.content}
+                      handleDownVotes={() =>
+                        handleVotes("downvote", comment?.score)
+                      }
+                      handleUpVotes={() =>
+                        handleVotes("upvote", comment?.score)
+                      }
+                      handleReply={handleReply}
+                    />
+                  );
+                })
               )}
 
               <AddComment />
