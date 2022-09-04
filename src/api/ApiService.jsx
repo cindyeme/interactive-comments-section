@@ -1,10 +1,14 @@
 import axios from 'axios';
+import { COMMENTS_URL, CURRENT_USER_URL } from './routes';
 
-const BASE_URL = 'http://localhost:3000/comments';
-
+// get all comments
 const getAllComments = async () => {
-  const request = await axios.get(BASE_URL);
+  const request = await axios.get(COMMENTS_URL);
+  return request.data;
+}
+const getCurrentUserComments = async () => {
+  const request = await axios.get(CURRENT_USER_URL);
   return request.data;
 }
 
-export default { getAllComments };
+export default { getAllComments, getCurrentUserComments };

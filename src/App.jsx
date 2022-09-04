@@ -1,13 +1,16 @@
+import AddComment from "./components/AddComment";
 import SingleComment from "./components/SingleComment";
 
 function App() {
-
   return (
     <>
       <main>
         <div className="App-header bg-neutral-200 w-full">
-          <div className="flex flex-col space-y-4 items-center max-w-[43rem]">
-            <SingleComment />
+          <div className="max-w-3xl mx-auto px-4">
+            <div className="flex flex-col space-y-4">
+              <SingleComment />
+              <AddComment />
+            </div>
           </div>
         </div>
       </main>
