@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ApiService from "../api/ApiService";
 import CommentBox from "./Layouts";
+import avatar from "../images/avatars/image-juliusomo.png";
 
 const AddComment = () => {
   const [user, setUser] = useState({});
@@ -9,12 +10,10 @@ const AddComment = () => {
     ApiService.getCurrentUserComments().then(res => setUser(res))
   }, []);
 
-  console.log("user>>", user, user.image?.png);
-
   return (
     <CommentBox>
       <div className="float-left mr-4">
-        <img src={user?.image?.png} alt="avatar" className="w-10 h-10 object-cover" />
+        <img src={user?.image?.webp || avatar} alt="avatar" className="w-10 h-10 object-cover" crossOrigin="anonymous" />
       </div>
       <div className="flex">
         <div className="grow w-full mr-4">

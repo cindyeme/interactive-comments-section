@@ -1,17 +1,17 @@
 import Votes from "./Votes";
-import avatar from "../images/avatars/image-amyrobson.png";
+// import avatar from "../images/avatars/image-amyrobson.png";
 import Icons from "../icons/Icons";
 import CommentBox from "./Layouts";
 
 export default function SingleComment({
-  score = 12,
+  score,
   handleDownVotes,
   handleUpVotes,
   _avatar,
-  username = "amyrobson",
-  createdAt = "1 month ago",
+  username,
+  createdAt,
   handleReply,
-  comment = "Impressive! Though it seems the drag feature could be improved. But overall it looks incredible. You've nailed the design and the responsiveness at various breakpoints works really well.",
+  content,
 }) {
   return (
     <CommentBox>
@@ -26,7 +26,7 @@ export default function SingleComment({
           {/* user details */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <img src={avatar} alt="avatar" className="w-8 h-8 object-cover" />
+              <img src={_avatar} alt="avatar" className="w-8 h-8 object-cover" />
               <p className="font-semibold text-neutral-500">{username}</p>
               <p className="text-neutral-400">{createdAt}</p>
             </div>
@@ -45,7 +45,7 @@ export default function SingleComment({
           </div>
           {/* comment */}
           <div>
-            <p className="text-neutral-400">{comment}</p>
+            <p className="text-neutral-400">{content}</p>
           </div>
         </div>
       </div>

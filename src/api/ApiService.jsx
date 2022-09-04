@@ -6,6 +6,7 @@ const getAllComments = async () => {
   const request = await axios.get(COMMENTS_URL);
   return request.data;
 }
+// get current user
 const getCurrentUserComments = async () => {
   const request = await axios.get(CURRENT_USER_URL);
   return request.data;
