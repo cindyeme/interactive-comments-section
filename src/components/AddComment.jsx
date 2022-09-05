@@ -5,7 +5,7 @@ import avatar from "../images/avatars/image-juliusomo.png";
 import { TextArea } from "./InputField";
 import { Button } from "./Button";
 
-const AddComment = ({ value, handleChange, disabled }) => {
+const AddComment = ({ value, handleChange, loading, addComment }) => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -19,7 +19,6 @@ const AddComment = ({ value, handleChange, disabled }) => {
           src={user?.image?.webp || avatar}
           alt="avatar"
           className="w-10 h-10 object-cover"
-          crossOrigin="anonymous"
         />
       </div>
       <div className="flex">
@@ -32,7 +31,7 @@ const AddComment = ({ value, handleChange, disabled }) => {
           />
         </div>
         <div className="flex-none">
-          <Button text="Send" disabled={disabled} />
+          <Button text="Send" disabled={loading} handleClick={addComment} />
         </div>
       </div>
     </CommentBox>

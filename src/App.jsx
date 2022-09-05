@@ -1,13 +1,30 @@
 import { useState, useEffect } from "react";
+import dayjs from 'dayjs';
 import { ApiService } from "./api/ApiService";
 import AddComment from "./components/AddComment";
+import Notification from "./components/Notification";
 import SingleComment from "./components/SingleComment";
 
+const relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
+
+
 function App() {
-  const [comment, setComment] = useState('')
+  const [newComment, setNewComment] = useState({
+    content: "",
+    createdAt: "",
+    score: "",
+    user: {
+      image: {
+        png: "",
+        webp: "",
+      },
+      username: "",
+    },
+  });
   const [oldComments, setOldComments] = useState([]);
   const [loading, setLoading] = useState(true);
-  // let [score, setScore] = useState(0);
+  const [message, setMessage] = useState({ msg: "", status: "" });
 
   // handle votes
   const handleVotes = (type, score) => {
@@ -25,6 +42,63 @@ function App() {
     // }
   };
 
+  // notify
+  const notify = (msg, status) => {
+    setMessage({ msg, status });
+    setTimeout(() => {
+      setMessage({ msg: "", status: "" });
+    }, 5000);
+  };
+
+  // handle change
+  const handleChange = (e) => {
+    setNewComment({ ...newComment, content: e.target.value });
+  };
+
+  // handle submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const comment = {
+      content: newComment.content,
+      createdAt: dayjs().toNow(),
+      score: 0,
+      user: {
+        image: {
+          png: "./images/avatars/image-juliusomo.png",
+          webp: "./images/avatars/image-juliusomo.webp",
+        },
+        username: "juliusomo",
+      },
+    };
+
+    // add comment
+    ApiService.addComment(comment)
+      .then((result) => {
+        setOldComments(oldComments.concat(result));
+        console.log(result);
+        notify(`Comment successfully added!`, "ok");
+      })
+      .catch((err) => {
+        console.log("Error in create >>>", err);
+        notify(`Failed to add comment!`, "error");
+      });
+    // reset
+    setNewComment({
+      content: "",
+      createdAt: "",
+      score: "",
+      user: {
+        image: {
+          png: "",
+          webp: "",
+        },
+        username: "",
+      },
+    });
+  };
+
+  // handle reply
   const handleReply = () => {};
 
   useEffect(() => {
@@ -42,7 +116,7 @@ function App() {
     <>
       <main>
         <div className="App-header bg-neutral-200 w-full">
-          <div className="max-w-3xl mx-auto px-4">
+          <div className="max-w-3xl mx-auto px-4 h-full overflow-y-auto my-12">
             <div className="flex flex-col space-y-5">
               {loading ? (
                 <h1 className="text-center text-lg text-primary-400">
@@ -50,7 +124,6 @@ function App() {
                 </h1>
               ) : (
                 oldComments.map((comment, idx) => {
-                  // score = comment?.score;
                   return (
                     <SingleComment
                       key={idx}
@@ -71,12 +144,18 @@ function App() {
                 })
               )}
 
-              <AddComment />
+              <AddComment
+                value={newComment.content}
+                handleChange={handleChange}
+                loading={loading}
+                addComment={handleSubmit}
+              />
+              <Notification message={message.msg} status={message.status} />
             </div>
           </div>
         </div>
       </main>
-      <footer className="absolute right-0 bottom-0">
+      <footer className="hidden md:absolute right-0 bottom-0">
         <div className="attribution pt-10 md:pt-0 text-white">
           Challenge by{" "}
           <a
