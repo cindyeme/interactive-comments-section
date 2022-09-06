@@ -16,5 +16,10 @@ const addComment = async (body) => {
   const request = await axios.post(COMMENTS_URL, body);
   return request.data;
 }
+// update comment
+const updateComment = async (id, newObject) => {
+  const request = await axios.put(`${COMMENTS_URL}/${id}`, newObject);
+  return request.data;
+}
 
-export const ApiService = { getAllComments, getCurrentUserComments, addComment };
+export const ApiService = { getAllComments, getCurrentUserComments, addComment, updateComment };

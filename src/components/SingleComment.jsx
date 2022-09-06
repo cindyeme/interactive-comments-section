@@ -21,6 +21,7 @@ export default function SingleComment({
   value,
   handleChange,
   disabled,
+  updateComment
 }) {
   return (
     <CommentBox>
@@ -31,7 +32,7 @@ export default function SingleComment({
           handleDownVotes={handleDownVotes}
           handleUpVotes={handleUpVotes}
         />
-        <div className="flex flex-col space-y-3">
+        <div className="flex flex-col space-y-3 flex-wrap">
           {/* user details */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -66,7 +67,7 @@ export default function SingleComment({
                   </button>
                   {/* Edit */}
                   <button
-                    type="button"
+                    type="submit"
                     onClick={handleEdit}
                     className="flex items-center space-x-2 group transition duration-200 ease-linear primary"
                   >
@@ -103,7 +104,12 @@ export default function SingleComment({
                   handleChange={handleChange}
                 />
                 <div className="flex items-end justify-end">
-                  <Button text="update" disabled={disabled} />
+                  <Button
+                    type="submit"
+                    text="update"
+                    disabled={disabled}
+                    handleClick={updateComment}
+                  />
                 </div>
               </>
             ) : (

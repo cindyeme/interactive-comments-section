@@ -12,7 +12,10 @@ const CurrentUserComment = ({
   handleEdit,
   handleDelete,
   edit,
-  disabled
+  disabled,
+  updateComment,
+  value, 
+  handleChange
 }) => {
   return (
     <SingleComment
@@ -27,8 +30,11 @@ const CurrentUserComment = ({
       currentUser
       handleEdit={handleEdit}
       handleDelete={handleDelete}
+      updateComment={updateComment}
       edit={edit}
       disabled={disabled}
+      value={value}
+      handleChange={handleChange}
     />
   );
 };
