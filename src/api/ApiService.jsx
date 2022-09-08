@@ -22,4 +22,10 @@ const updateComment = async (id, newObject) => {
   return request.data;
 }
 
-export const ApiService = { getAllComments, getCurrentUserComments, addComment, updateComment };
+// delete comment
+const deleteComment = async (id) => {
+  const request = await axios.delete(`${COMMENTS_URL}/${id}`);
+  return request.data;
+};
+
+export const ApiService = { getAllComments, getCurrentUserComments, addComment, updateComment, deleteComment };

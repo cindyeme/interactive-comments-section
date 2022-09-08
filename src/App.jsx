@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import Swal from "sweetalert";
 import { ApiService } from "./api/ApiService";
 import AddComment from "./components/AddComment";
 import Notification from "./components/Notification";
@@ -121,13 +122,11 @@ function App() {
       (comment) => comment.id === editComment.id
     );
 
-    console.log(checkComment);
-
     // add updated comment
     const updatedComment = { ...checkComment, content: editComment.content };
 
     // validate
-    if (updatedComment.content === "" && checkComment.id) {
+    if (checkComment && updatedComment.content === "") {
       notify("Please enter a comment", "fail");
     } else {
       // update comment
@@ -149,16 +148,59 @@ function App() {
     }
   };
 
+  // handle comment delete
+  const handleDelete = (id) => {
+    // if (id) {
+          Swal.fire({
+            title: "Delete comment",
+            icon: 'warning',
+            text: "Are you sure you want to delete this comment? This will remove the comment and can't be undone.",
+            confirmButtonColor: "hsl(358, 79%, 66%)",
+            cancelButtonColor: "hsl(211, 10%, 45%)",
+            confirmButtonText: "YES, DELETE",
+            cancelButtonText: `No, CANCEL`,
+          })
+            // .then((result) => {
+            // if (result.isConfirmed) {
+              // setOldComments(oldComments.filter((c) => c.id !== id));
+              // notify(`Successfully deleted!`, "ok");
+          //   }
+          // });
+      // ApiService.deleteComment(id)
+      //   .then((result) => {
+      //     console.log(result)
+      //     Swal.fire({
+      //       title: "Delete comment",
+      //       text: "Are you sure you want to delete this comment? This will remove the comment and can't be undone.",
+      //       confirmButtonColor: "hsl(358, 79%, 66%)",
+      //       cancelButtonColor: "hsl(211, 10%, 45%)",
+      //       confirmButtonText: "YES, DELETE",
+      //       cancelButtonText: `No, CANCEL`,
+      //     }).then((result) => {
+      //       if (result.isConfirmed) {
+      //         // setOldComments(oldComments.filter((c) => c.id !== id));
+      //         notify(`Successfully deleted!`, "ok");
+      //       }
+      //     });
+      //   })
+      //   .catch((error) => {
+      //     notify(`Failed to delete comment!`, "fail");
+      //     setOldComments(oldComments.filter((c) => c.id !== id));
+      //     console.log(error);
+      //   });
+    // }
+  };
+
   // handle reply
   const handleReply = () => {};
 
   // handle show edit
   const handleShowEdit = (id) => {
-    if (id) setOpenEdit(true);
     const singleComment = oldComments.find((comment) => comment.id === id);
     if (id) {
       setEditComment({ ...singleComment });
     }
+    if (id) setOpenEdit(true);
   };
 
   useEffect(() => {
@@ -226,6 +268,7 @@ function App() {
                         handleChange={handleUpdateInputChange}
                         disabled={loading}
                         updateComment={handleCommentUpdate}
+                        handleDelete={handleDelete}
                       />
                     );
                   })}

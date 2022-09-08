@@ -15,7 +15,7 @@ const CurrentUserComment = ({
   disabled,
   updateComment,
   value, 
-  handleChange
+  handleChange,
 }) => {
   return (
     <SingleComment

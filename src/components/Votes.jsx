@@ -1,8 +1,8 @@
 import { Icons } from "../icons/Icons";
 
 const Votes = ({ score, handleDownVotes, handleUpVotes }) => (
-  <div className="float-left mr-5">
-    <div className="bg-neutral-200 border border-neutral-200 flex flex-col items-center space-y- rounded-md">
+  <div className="flex md:float-left mr-5 order-2">
+    <div className="bg-neutral-200 border border-neutral-200 flex md:flex-col items-center space-x-2 md:space-x-0 rounded-md">
       <button
         type="button"
         onClick={handleUpVotes}
