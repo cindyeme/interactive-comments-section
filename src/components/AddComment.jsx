@@ -31,7 +31,7 @@ const AddComment = ({ value, handleChange, loading, addComment }) => {
           />
         </div>
         <div className="flex-none">
-          <Button text="Send" disabled={loading} handleClick={addComment} />
+          <Button text={loading ? "SENDING..": "SEND"} disabled={loading} handleClick={addComment} />
         </div>
       </div>
     </CommentBox>

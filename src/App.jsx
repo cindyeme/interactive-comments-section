@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import Swal from "sweetalert";
 import { ApiService } from "./api/ApiService";
 import AddComment from "./components/AddComment";
 import Notification from "./components/Notification";
 import SingleComment from "./components/SingleComment";
 import CurrentUserComment from "./components/CurrentUserComment";
+import { Modal } from "./components/Modal";
 
 const relativeTime = require("dayjs/plugin/relativeTime");
 dayjs.extend(relativeTime);
@@ -28,6 +28,9 @@ function App() {
   const [message, setMessage] = useState({ msg: "", status: "" });
   const [openEdit, setOpenEdit] = useState(false);
   const [editComment, setEditComment] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [addLoading, setAddLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   // handle votes
   const handleVotes = (type, score) => {
@@ -67,7 +70,7 @@ function App() {
   const handleNewSubmit = (e) => {
     // prevent page from reloading
     e.preventDefault();
-
+    setAddLoading(true);
     // new comment
     const comment = {
       content: newComment.content,
@@ -89,11 +92,11 @@ function App() {
       ApiService.addComment(comment)
         .then((result) => {
           setOldComments(oldComments.concat(result));
-          console.log(result);
+          setAddLoading(false);
           notify(`Comment successfully added!`, "ok");
         })
-        .catch((err) => {
-          console.log("Error in create >>>", err);
+        .catch(() => {
+          setAddLoading(false);
           notify(`Failed to add comment!`, "error");
         });
     }
@@ -149,46 +152,28 @@ function App() {
   };
 
   // handle comment delete
-  const handleDelete = (id) => {
-    // if (id) {
-          Swal.fire({
-            title: "Delete comment",
-            icon: 'warning',
-            text: "Are you sure you want to delete this comment? This will remove the comment and can't be undone.",
-            confirmButtonColor: "hsl(358, 79%, 66%)",
-            cancelButtonColor: "hsl(211, 10%, 45%)",
-            confirmButtonText: "YES, DELETE",
-            cancelButtonText: `No, CANCEL`,
-          })
-            // .then((result) => {
-            // if (result.isConfirmed) {
-              // setOldComments(oldComments.filter((c) => c.id !== id));
-              // notify(`Successfully deleted!`, "ok");
-          //   }
-          // });
-      // ApiService.deleteComment(id)
-      //   .then((result) => {
-      //     console.log(result)
-      //     Swal.fire({
-      //       title: "Delete comment",
-      //       text: "Are you sure you want to delete this comment? This will remove the comment and can't be undone.",
-      //       confirmButtonColor: "hsl(358, 79%, 66%)",
-      //       cancelButtonColor: "hsl(211, 10%, 45%)",
-      //       confirmButtonText: "YES, DELETE",
-      //       cancelButtonText: `No, CANCEL`,
-      //     }).then((result) => {
-      //       if (result.isConfirmed) {
-      //         // setOldComments(oldComments.filter((c) => c.id !== id));
-      //         notify(`Successfully deleted!`, "ok");
-      //       }
-      //     });
-      //   })
-      //   .catch((error) => {
-      //     notify(`Failed to delete comment!`, "fail");
-      //     setOldComments(oldComments.filter((c) => c.id !== id));
-      //     console.log(error);
-      //   });
-    // }
+  const handleConfirmDelete = (id) => {
+    setDeleteLoading(true)
+    if (id) {
+      ApiService.deleteComment(id)
+        .then(() => {
+          setOldComments(oldComments.filter((c) => c.id !== id));
+          setDeleteLoading(false)
+          notify(`Successfully deleted!`, "ok");
+          setShowModal(false);
+        })
+        .catch(() => {
+          notify(`Failed to delete comment!`, "fail");
+          setOldComments(oldComments.filter((c) => c.id !== id));
+          setDeleteLoading(false);
+        });
+    }
+    console.log(id, oldComments);
+  };
+
+  // handle cancel
+  const handleCancel = () => {
+    setShowModal(false);
   };
 
   // handle reply
@@ -215,8 +200,14 @@ function App() {
   return (
     <>
       <main>
-        <div className="App-header bg-neutral-200 w-full">
-          <div className="max-w-3xl mx-auto px-4 h-full overflow-y-auto my-12">
+        {/* {showModal && (
+          <Modal
+            handleCancel={handleCancel}
+            handleConfirmDelete={handleConfirmDelete}
+          />
+        )} */}
+        <div className="App-header bg-neutral-200 w-full z-10">
+          <div className="max-w-3xl mx-auto px-4 h-full overflow-y-auto my-12 relative">
             <div className="flex flex-col space-y-5">
               <Notification message={message.msg} status={message.status} />
 
@@ -268,7 +259,13 @@ function App() {
                         handleChange={handleUpdateInputChange}
                         disabled={loading}
                         updateComment={handleCommentUpdate}
-                        handleDelete={handleDelete}
+                        handleDelete={() => setShowModal(true)}
+                        showModal={showModal}
+                        handleCancel={handleCancel}
+                        handleConfirmDelete={() =>
+                          handleConfirmDelete(comment?.id)
+                        }
+                        loading={deleteLoading}
                       />
                     );
                   })}
@@ -278,7 +275,7 @@ function App() {
               <AddComment
                 value={newComment.content}
                 handleChange={handleNewChange}
-                loading={loading}
+                loading={addLoading}
                 addComment={handleNewSubmit}
               />
             </div>

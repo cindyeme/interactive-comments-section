@@ -1,3 +1,4 @@
+import { Modal } from "./Modal";
 import SingleComment from "./SingleComment";
 
 const CurrentUserComment = ({
@@ -16,26 +17,39 @@ const CurrentUserComment = ({
   updateComment,
   value, 
   handleChange,
+  showModal,
+  handleCancel,
+  handleConfirmDelete,
+  loading
 }) => {
   return (
-    <SingleComment
-      score={score}
-      handleDownVotes={handleDownVotes}
-      handleUpVotes={handleUpVotes}
-      _avatar={_avatar}
-      username={username}
-      createdAt={createdAt}
-      handleReply={handleReply}
-      content={content}
-      currentUser
-      handleEdit={handleEdit}
-      handleDelete={handleDelete}
-      updateComment={updateComment}
-      edit={edit}
-      disabled={disabled}
-      value={value}
-      handleChange={handleChange}
-    />
+    <>
+      {showModal && (
+        <Modal
+          handleCancel={handleCancel}
+          handleConfirmDelete={handleConfirmDelete}
+          loading={loading}
+        />
+      )}
+      <SingleComment
+        score={score}
+        handleDownVotes={handleDownVotes}
+        handleUpVotes={handleUpVotes}
+        _avatar={_avatar}
+        username={username}
+        createdAt={createdAt}
+        handleReply={handleReply}
+        content={content}
+        currentUser
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        updateComment={updateComment}
+        edit={edit}
+        disabled={disabled}
+        value={value}
+        handleChange={handleChange}
+      />
+    </>
   );
 };
 
